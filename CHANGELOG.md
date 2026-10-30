@@ -1,5 +1,19 @@
 # Changelog
 
+## BTcord 1.0.1 — 2026-10-30
+
+- Fixed the Friends page rendering as floating solid-purple blocks. The
+  FriendGrid card body was inheriting BTcord's intentionally transparent
+  `--background-base-lower` token while the legacy 80px banner, scaled avatar
+  and bottom-positioned text remained. Friend cards now use a visible glass
+  surface with a slim accent line, keep avatars at native size, place text in
+  normal flow, and restore card action buttons to the top-right corner.
+- Added `index.html` at the repository root redirecting to `preview.html`, so
+  the GitHub Pages root URL no longer returns 404 when Pages is deployed from
+  the `main` branch root.
+- Rebuilt `btcord.bundle.theme.css` for Upload Theme/direct-link installs that
+  do not use GitHub Pages.
+
 ## BTcord 1.0.0 — 2026-10-30
 
 First BTcord release: the Chillax 2.1.3 fork (`9536ba1`) updated for Discord's
