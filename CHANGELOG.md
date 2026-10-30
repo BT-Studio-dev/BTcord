@@ -73,6 +73,9 @@ own repository.
 - Reduced-motion support (`prefers-reduced-motion`), visible
   `:focus-visible` outlines, themed text selection.
 - Fixed invalid CSS found along the way (`width: 100;`, `rgb(0, 0, 0.9)`).
+- Added `btcord.bundle.theme.css`: a single-file build (via
+  `scripts/build-bundle.py`) with a direct raw-GitHub download/Online-Themes
+  link that works without GitHub Pages.
 - Added `.nojekyll`, `preview.html` mock, and `scripts/check-css.py`
   (syntax + dead-selector checker for future Discord updates).
 

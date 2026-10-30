@@ -21,6 +21,18 @@
 
 You need a client mod. Install **one** of [Vencord](https://vencord.dev/), [BetterDiscord](https://betterdiscord.app/), Vesktop or Legcord, then:
 
+### ⚡ Fastest: direct download link (single file, no GitHub Pages needed)
+
+Paste this link into **Vencord → Settings → Themes → Online Themes** and click **Add**, then enable **BTcord** under *Installed Themes*:
+
+```
+https://raw.githubusercontent.com/BT-Studio-dev/BTcord/main/btcord.bundle.theme.css
+```
+
+Or [download `btcord.bundle.theme.css`](https://raw.githubusercontent.com/BT-Studio-dev/BTcord/main/btcord.bundle.theme.css) and use **Upload Theme** / drop it in your themes folder. It's one self-contained file (rebuilt with `python3 scripts/build-bundle.py`).
+
+The modular install below (small file, editable variables, auto-updates per file) needs GitHub Pages enabled on this repo.
+
 <details>
 <summary><b>Vencord / Vesktop (recommended)</b></summary>
 
@@ -92,7 +104,8 @@ All `@import` URLs point at `https://bt-studio-dev.github.io/BTcord/…`. For th
 Repository layout:
 
 ```
-btcord.theme.css      ← users install this (variables + imports)
+btcord.theme.css      ← modular install (variables + imports, needs GitHub Pages)
+btcord.bundle.theme.css ← single-file install (direct link above, no Pages needed; generated)
 chillax.css             core theme (upstream Chillax core + BTcord VR layer at the end)
 btcord.css              convenience forward to the core
 chillax.theme.css       compatibility forward to btcord.theme.css (old installs)
@@ -101,6 +114,7 @@ Addons/                 optional features (one @import each)
 Wallpapers/             background images
 preview.html            static Discord mock for screenshot/preview
 scripts/check-css.py    CSS syntax + dead-selector checker
+scripts/build-bundle.py rebuilds btcord.bundle.theme.css from the sources
 ```
 
 # Credits
