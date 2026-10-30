@@ -6,7 +6,9 @@
     --FG-search-radius: 8px;
 
     --FG-cards-radius: 8px;
-    --FG-cards-height: 180px;
+    /* BTcord 1.0.1: compact cards. The legacy 180px height left a large
+       invisible area between the banner and the username. */
+    --FG-cards-height: 128px;
     --FG-cards-banner-background: var(--accentcolorV2);
     --FG-cards-margin-bottom: 26px;
     --FG-cards-banner-height: 20px;
@@ -58,13 +60,15 @@
 :is(.theme-dark, .theme-darker, .theme-midnight) {
     --FG-search-background: var(--background-base-lowest, var(--background-tertiary, rgb(0 0 0 / 25%)));
 
-    --FG-cards-background-normal: var(--background-base-lower, var(--background-secondary));
-    --FG-cards-background-hover: var(--activity-card-background);
+    /* Do not use --background-base-lower here: BTcord deliberately sets that
+       token to transparent for the glass window. Friend cards need their own
+       visible surface, otherwise only the purple banner can be seen. */
+    --FG-cards-background-normal: var(--background-surface-high, rgb(18 18 24 / 78%));
+    --FG-cards-background-hover: var(--background-surface-higher, rgb(28 28 38 / 88%));
+    --FG-cards-background-active: var(--background-surface-highest, rgb(28 28 38 / 94%));
 
-    --FG-cards-background-active: var(--activity-card-background);
-
-    --FG-cards-border-color-normal: var(--background-modifier-accent);
-    --FG-cards-border-color-hover: var(--background-modifier-accent);
+    --FG-cards-border-color-normal: var(--border-subtle, rgb(255 255 255 / 12%));
+    --FG-cards-border-color-hover: var(--border-normal, rgb(255 255 255 / 22%));
 
     --FG-cards-username-normal: var(--text-strong, var(--header-primary));
     --FG-cards-username-hover: var(--text-strong, var(--header-primary));
@@ -74,7 +78,7 @@
     --FG-cards-status-hover: var(--text-subtle, var(--header-secondary));
 
     --FG-cards-button-icon-normal: var(--interactive-active);
-    --FG-cards-button-icon-hover: var(--activity-card-background);
+    --FG-cards-button-icon-hover: var(--interactive-active);
     --FG-cards-button-background-normal: rgba(0, 0, 0, 0.3);
     --FG-cards-button-background-hover: rgba(0, 0, 0, 0.6);
 }
@@ -86,13 +90,13 @@
 .theme-light {
     --FG-search-background: var(--background-base-lowest, var(--background-tertiary, rgb(0 0 0 / 25%)));
 
-    --FG-cards-background-normal: var(--background-base-lower, var(--background-secondary));
-    --FG-cards-background-hover: var(--activity-card-background);
+    /* Keep light-mode cards on a visible surface as well; see dark note. */
+    --FG-cards-background-normal: var(--background-surface-high, rgb(255 255 255 / 78%));
+    --FG-cards-background-hover: var(--background-surface-higher, rgb(255 255 255 / 88%));
+    --FG-cards-background-active: var(--background-surface-highest, rgb(255 255 255 / 94%));
 
-    --FG-cards-background-active: var(--activity-card-background);
-
-    --FG-cards-border-color-normal: var(--background-modifier-accent);
-    --FG-cards-border-color-hover: var(--background-modifier-accent);
+    --FG-cards-border-color-normal: var(--border-subtle, rgb(0 0 0 / 12%));
+    --FG-cards-border-color-hover: var(--border-normal, rgb(0 0 0 / 22%));
 
     --FG-cards-username-normal: var(--text-strong, var(--header-primary));
     --FG-cards-username-hover: var(--text-strong, var(--header-primary));
@@ -102,7 +106,7 @@
     --FG-cards-status-hover: var(--text-subtle, var(--header-secondary));
 
     --FG-cards-button-icon-normal: var(--interactive-active);
-    --FG-cards-button-icon-hover: var(--activity-card-background);
+    --FG-cards-button-icon-hover: var(--interactive-active);
     --FG-cards-button-background-normal: rgba(255, 255, 255, 0.3);
     --FG-cards-button-background-hover: rgba(255, 255, 255, 0.6);
 }
@@ -678,4 +682,131 @@
 /* BTcord 1.0: replaces the pre-2023 spacer rule. Hides virtual-list 0px spacers. */
 .peopleColumn__133bf .peopleList__5ec2f [style="height: 0px;"] {
     display: none;
+}
+
+/* ---------------------------------------------------------------------------
+   BTcord 1.0.1 — FriendGrid screenshot fix
+
+   The upstream card layout combines an 80px solid banner, a scaled avatar
+   and absolutely positioned text. In Visual Refresh, BTcord's card-body
+   token resolved to transparent, leaving a floating purple slab (reported
+   from a real client screenshot). These final overrides keep the grid but
+   put avatar and text back into normal flow on one visible glass card.
+   --------------------------------------------------------------------------- */
+
+/* Keep the list heading inside the friends column instead of pushing it up
+   underneath Discord's window/title bar. */
+.peopleColumn__133bf .title__1472a {
+    position: static !important;
+    margin: 0 0 12px !important;
+}
+
+/* Responsive columns without the legacy viewport-width margin ladder. */
+.peopleColumn__133bf .peopleList__5ec2f > div {
+    grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr)) !important;
+    gap: 12px !important;
+    margin-right: 0 !important;
+    align-items: stretch;
+}
+
+/* One coherent glass card. A 3px accent line replaces the old 80px banner. */
+.peopleColumn__133bf .peopleListItem_cc6179 {
+    position: relative !important;
+    box-sizing: border-box;
+    overflow: hidden !important;
+    height: auto !important;
+    min-height: var(--FG-cards-height) !important;
+    padding: 16px !important;
+    background: var(--FG-cards-background-normal) !important;
+    border-color: var(--FG-cards-border-color-normal) !important;
+    box-shadow: inset 0 3px 0 var(--FG-cards-banner-background);
+}
+
+.peopleColumn__133bf .peopleListItem_cc6179:hover {
+    background: var(--FG-cards-background-hover) !important;
+    border-color: var(--FG-cards-border-color-hover) !important;
+}
+
+/* Let the row's own flex layout do the positioning work. */
+.peopleColumn__133bf :is(
+    .listItemContents_e1ecd3,
+    .listItemContents__61863,
+    .listItemContents_fc004c
+) {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+}
+
+.peopleColumn__133bf .userInfo__0a06e {
+    position: relative !important;
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 10px;
+    width: auto !important;
+    min-width: 0;
+    height: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+}
+
+/* Remove both legacy pseudo-layers: the solid banner and the fixed-size
+   disc behind the avatar. They were the visible purple blocks. */
+.peopleColumn__133bf .userInfo__0a06e::before,
+.peopleColumn__133bf .avatar__0a06e::before {
+    content: none !important;
+    display: none !important;
+}
+
+/* Keep the avatar and any decoration at native size to prevent cropping. */
+.peopleColumn__133bf .avatar__0a06e {
+    flex: 0 0 auto;
+    margin: 0 !important;
+    transform: none !important;
+}
+
+/* Username/status sit directly under the avatar, not at the bottom of an
+   invisible 200px card. */
+.peopleColumn__133bf .text__0a06e {
+    position: static !important;
+    width: 100% !important;
+    min-width: 0;
+    margin: 0 !important;
+    overflow: hidden;
+}
+
+.peopleColumn__133bf :is(.username__0a06e, .discriminator__0a06e) {
+    font-size: 16px;
+    line-height: 20px;
+}
+
+/* Message/more buttons belong in the card's top-right corner. The legacy
+   rules pushed them to bottom:95% inside a zero-height box. */
+.peopleColumn__133bf .peopleListItem_cc6179 :is(
+    .actions_fc004c,
+    .actions_e1ecd3
+) {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: 2;
+    display: flex !important;
+    gap: 8px;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    transform: none !important;
+}
+
+.peopleColumn__133bf .peopleListItem_cc6179:focus-within .actionButton_f8fa06 {
+    opacity: var(--FG-cards-button-opacity-hover) !important;
 }
